@@ -36,9 +36,9 @@ app.use(cors());
 // - see contact details
 
 app.get("/contacts", async (req, res) => {
+  let allDocs = [];
   try {
     const docsRec = await getDocs(query(Contacts.Contacts));
-    let allDocs = [];
     docsRec.forEach((snap) => {
       allDocs.push(snap.data());
     });
