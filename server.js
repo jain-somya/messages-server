@@ -76,17 +76,17 @@ app.get("/total", async (req, res) => {
 });
 app.post("/create/message", async (req, res) => {
   try {
-    console.log(req.body);
+    
     await client.messages.create({
       body: req.body.msg,
       from: "+19706361098",
       to: req.body.to,
-      created: new Date()
     });
   } catch (err) {
     res.status(400).send(err.message);
   }
-  const data = req.body;
+  let data = req.body;
+  data.created = new Date();
   await addDoc(Messages.Messages, data);
   res.status(200).send({ msg: "Message sent!" });
 });
