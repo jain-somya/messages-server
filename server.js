@@ -6,7 +6,7 @@ import Contacts from "./firebase.js";
 import twilio from "twilio";
 
 import endpoint from "./config.js";
-import { addDoc, query, getDocs } from "firebase/firestore";
+import { addDoc, query, getDocs, orderBy } from "firebase/firestore";
 
 //app config
 const app = express();
@@ -51,6 +51,19 @@ app.get("/contacts", async (req, res) => {
 app.get("/messages", async (req, res) => {
   let allDocs = [];
   try {
+    const docsRec = await getDocs(query(Messages.Messages,orderBy('created',desc)));
+    docsRec.forEach((snap) => {
+      allDocs.push(snap.data());
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(400).send(err.message);
+  }
+  res.status(201).send(allDocs);
+});
+app.get("/total", async (req, res) => {
+  let allDocs = [];
+  try {
     const docsRec = await getDocs(query(Messages.Messages));
     docsRec.forEach((snap) => {
       allDocs.push(snap.data());
@@ -61,7 +74,6 @@ app.get("/messages", async (req, res) => {
   }
   res.status(201).send(allDocs);
 });
-
 app.post("/create/message", async (req, res) => {
   try {
     console.log(req.body);
@@ -69,6 +81,7 @@ app.post("/create/message", async (req, res) => {
       body: req.body.msg,
       from: "+19706361098",
       to: req.body.to,
+      created: new Date()
     });
   } catch (err) {
     res.status(400).send(err.message);
