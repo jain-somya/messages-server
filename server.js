@@ -56,6 +56,7 @@ app.get("/messages", async (req, res) => {
       allDocs.push(snap.data());
     });
   } catch (err) {
+    console.log(err)
     res.status(400).send(err.message);
   }
   res.status(201).send(allDocs);
@@ -76,6 +77,7 @@ app.post("/create/message", async (req, res) => {
   await addDoc(Messages.Messages, data);
   res.status(200).send({ msg: "Message sent!" });
 });
+app.get("/", (req, res) => res.status(200).send("hello world"));
 
 app.post("/create/contact", async (req, res) => {
   try {
