@@ -49,9 +49,9 @@ app.get("/contacts", async (req, res) => {
 });
 
 app.get("/messages", async (req, res) => {
+  let allDocs = [];
   try {
     const docsRec = await getDocs(query(Messages.Messages));
-    let allDocs = [];
     docsRec.forEach((snap) => {
       allDocs.push(snap.data());
     });
