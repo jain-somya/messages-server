@@ -61,19 +61,19 @@ app.get("/messages", async (req, res) => {
   }
   res.status(201).send(allDocs);
 });
-// app.get("/total", async (req, res) => {
-//   let allDocs = [];
-//   try {
-//     const docsRec = await getDocs(query(Messages.Messages));
-//     docsRec.forEach((snap) => {
-//       allDocs.push(snap.data());
-//     });
-//   } catch (err) {
-//     console.log(err)
-//     res.status(400).send(err.message);
-//   }
-//   res.status(201).send(allDocs);
-// });
+app.get("/total", async (req, res) => {
+  let allDocs = [];
+  try {
+    const docsRec = await getDocs(query(Messages.Messages));
+    docsRec.forEach((snap) => {
+      allDocs.push(snap.data());
+    });
+  } catch (err) {
+    console.log(err)
+    res.status(400).send(err.message);
+  }
+  res.status(201).send(allDocs);
+});
 app.post("/create/message", async (req, res) => {
   try {
     console.log(req.body);
