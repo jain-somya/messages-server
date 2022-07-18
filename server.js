@@ -75,18 +75,21 @@ app.get("/total", async (req, res) => {
   res.status(201).send(allDocs);
 });
 app.post("/create/message", async (req, res) => {
+  let data = req.body;
   try {
-    
     await client.messages.create({
-      body: req.body.msg,
+      body: data.msg,
       from: "+19706361098",
-      to: req.body.to,
+      to: data.to,
     });
   } catch (err) {
+    data.created = new Date();
+    data.status = false;
+    addDoc(Messages.Messages, data);
     res.status(400).send(err.message);
   }
-  let data = req.body;
   data.created = new Date();
+  data.status = true;
   await addDoc(Messages.Messages, data);
   res.status(200).send({ msg: "Message sent!" });
 });
